@@ -4,22 +4,22 @@
  */
 
 const TAG_CONFIG = {
-  'react': { color: '#61dafb', icon: '⚛️', label: 'React' },
-  'hooks': { color: '#ff6b6b', icon: '🪝', label: 'Hooks' },
-  'usestate': { color: '#4ecdc4', icon: '📦', label: 'useState' },
-  'state': { color: '#95e1d3', icon: '🎯', label: 'State' },
-  'useeffect': { color: '#f38181', icon: '⏱️', label: 'useEffect' },
-  'lifecycle': { color: '#aa96da', icon: '🔄', label: 'Lifecycle' },
-  'side effects': { color: '#fcbad3', icon: '✨', label: 'Side Effects' },
-  'javascript': { color: '#f7df1e', icon: '📜', label: 'JavaScript' },
-  'component': { color: '#61dafb', icon: '🧩', label: 'Component' },
-  'props': { color: '#ffd93d', icon: '📨', label: 'Props' },
-  'performance': { color: '#6bcf7f', icon: '⚡', label: 'Performance' },
-  'optimization': { color: '#4a90e2', icon: '🚀', label: 'Optimization' },
-  'context': { color: '#ff85c0', icon: '🌐', label: 'Context' },
-  'api': { color: '#a8dadc', icon: '🔌', label: 'API' },
-  'async': { color: '#f4a261', icon: '⏳', label: 'Async' },
-  'promise': { color: '#e76f51', icon: '🤝', label: 'Promise' },
+  'react': { bg: '#e8f5ff', border: '#61dafb', text: '#0099cc', icon: '⚛️', label: 'React' },
+  'hooks': { bg: '#ffe8f0', border: '#ff6b6b', text: '#cc0033', icon: '🪝', label: 'Hooks' },
+  'usestate': { bg: '#e0f8f7', border: '#4ecdc4', text: '#008080', icon: '📦', label: 'useState' },
+  'state': { bg: '#e8f9f6', border: '#95e1d3', text: '#00695c', icon: '🎯', label: 'State' },
+  'useeffect': { bg: '#ffe8e8', border: '#f38181', text: '#c00000', icon: '⏱️', label: 'useEffect' },
+  'lifecycle': { bg: '#f0e8ff', border: '#aa96da', text: '#5a3aaa', icon: '🔄', label: 'Lifecycle' },
+  'side effects': { bg: '#ffe8f5', border: '#fcbad3', text: '#cc007f', icon: '✨', label: 'Side Effects' },
+  'javascript': { bg: '#fffaeb', border: '#f7df1e', text: '#cc6600', icon: '📜', label: 'JavaScript' },
+  'component': { bg: '#e8f5ff', border: '#61dafb', text: '#0099cc', icon: '🧩', label: 'Component' },
+  'props': { bg: '#fffde8', border: '#ffd93d', text: '#cc9900', icon: '📨', label: 'Props' },
+  'performance': { bg: '#e8f8f0', border: '#6bcf7f', text: '#006600', icon: '⚡', label: 'Performance' },
+  'optimization': { bg: '#e8f1ff', border: '#4a90e2', text: '#003d99', icon: '🚀', label: 'Optimization' },
+  'context': { bg: '#ffe8fc', border: '#ff85c0', text: '#cc0066', icon: '🌐', label: 'Context' },
+  'api': { bg: '#e8f5f5', border: '#a8dadc', text: '#006666', icon: '🔌', label: 'API' },
+  'async': { bg: '#fff3e8', border: '#f4a261', text: '#cc5500', icon: '⏳', label: 'Async' },
+  'promise': { bg: '#ffe8e0', border: '#e76f51', text: '#990033', icon: '🤝', label: 'Promise' },
 };
 
 function Tags({ tags }) {
@@ -29,7 +29,9 @@ function Tags({ tags }) {
     <div className="tags-container">
       {tags.map((tag, idx) => {
         const config = TAG_CONFIG[tag.toLowerCase()] || {
-          color: '#' + Math.floor(Math.random()*16777215).toString(16),
+          bg: '#f0f0f0',
+          border: '#cccccc',
+          text: '#666666',
           icon: '🏷️',
           label: tag
         };
@@ -37,7 +39,11 @@ function Tags({ tags }) {
           <span
             key={idx}
             className="tag"
-            style={{ '--tag-color': config.color }}
+            style={{
+              backgroundColor: config.bg,
+              borderColor: config.border,
+              color: config.text
+            }}
             title={config.label}
           >
             <span className="tag-icon">{config.icon}</span>

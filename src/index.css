@@ -511,18 +511,18 @@ body {
   align-items: center;
   gap: 4px;
   padding: 4px 10px;
-  background: rgba(var(--tag-color-rgb), 0.15);
-  border: 1px solid var(--tag-color);
+  background: #f0f0f0;
+  border: 1px solid #cccccc;
   border-radius: 20px;
   font-size: 11px;
   font-weight: 500;
-  color: var(--text-primary);
+  color: #666666;
   transition: var(--transition);
 }
 
 .tag:hover {
-  background: rgba(var(--tag-color-rgb), 0.25);
   transform: translateY(-1px);
+  filter: brightness(0.95);
 }
 
 .tag-icon {
@@ -532,27 +532,6 @@ body {
 .tag-text {
   white-space: nowrap;
 }
-
-/* Tag color overrides using CSS variables */
-.tag {
-  --tag-color: #61dafb;
-}
-
-.tag[style*="--tag-color: #61dafb"] { --tag-color: #61dafb; }
-.tag[style*="--tag-color: #ff6b6b"] { --tag-color: #ff6b6b; }
-.tag[style*="--tag-color: #4ecdc4"] { --tag-color: #4ecdc4; }
-.tag[style*="--tag-color: #95e1d3"] { --tag-color: #95e1d3; }
-.tag[style*="--tag-color: #f38181"] { --tag-color: #f38181; }
-.tag[style*="--tag-color: #aa96da"] { --tag-color: #aa96da; }
-.tag[style*="--tag-color: #fcbad3"] { --tag-color: #fcbad3; }
-.tag[style*="--tag-color: #f7df1e"] { --tag-color: #f7df1e; }
-.tag[style*="--tag-color: #ffd93d"] { --tag-color: #ffd93d; }
-.tag[style*="--tag-color: #6bcf7f"] { --tag-color: #6bcf7f; }
-.tag[style*="--tag-color: #4a90e2"] { --tag-color: #4a90e2; }
-.tag[style*="--tag-color: #ff85c0"] { --tag-color: #ff85c0; }
-.tag[style*="--tag-color: #a8dadc"] { --tag-color: #a8dadc; }
-.tag[style*="--tag-color: #f4a261"] { --tag-color: #f4a261; }
-.tag[style*="--tag-color: #e76f51"] { --tag-color: #e76f51; }
 
 /* ── Question Items as Cards ── */
 .question-item-content {
