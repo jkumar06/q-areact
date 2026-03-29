@@ -1,12 +1,12 @@
-import { useRef } from 'react';
+import { useRef, forwardRef } from 'react';
 
 /**
  * SearchBar
  * Fixed to the bottom of the screen.
  * Includes search input and experience level filter buttons.
  */
-function SearchBar({ value, onChange, experience, onExperienceChange }) {
-  const inputRef = useRef(null);
+const SearchBar = forwardRef(({ value, onChange, experience, onExperienceChange }, ref) => {
+  const inputRef = ref || useRef(null);
 
   function handleClear() {
     onChange('');
@@ -49,7 +49,7 @@ function SearchBar({ value, onChange, experience, onExperienceChange }) {
             className="search-input"
             value={value}
             onChange={e => onChange(e.target.value)}
-            placeholder="Search Here...."
+            placeholder="Search Here.... (Use Cmd+K to focus)"
             aria-label="Search interview questions"
             autoComplete="off"
             spellCheck="false"
@@ -67,6 +67,8 @@ function SearchBar({ value, onChange, experience, onExperienceChange }) {
       </div>
     </div>
   );
-}
+});
+
+SearchBar.displayName = 'SearchBar';
 
 export default SearchBar;
