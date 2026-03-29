@@ -6,34 +6,52 @@ import QuestionList from './components/QuestionList.jsx';
 import AnswerPanel from './components/AnswerPanel.jsx';
 
 /**
- * Filters Q&A data by a search query.
+ * Filters Q&A data by search query and experience level.
  * Matches against: question text, tags, and answer body.
+ * Also filters by selected experience level.
  */
-function filterQuestions(data, query) {
+function filterQuestions(data, query, experience) {
   const q = query.toLowerCase().trim();
-  if (!q) return [];
-  return data.filter(item =>
-    item.question.toLowerCase().includes(q) ||
-    item.tags.some(tag => tag.toLowerCase().includes(q)) ||
-    item.answer.toLowerCase().includes(q)
-  );
+  
+  // If no query and no specific experience selected, return empty
+  if (!q && experience === 'all') return [];
+  
+  return data.filter(item => {
+    // Must match experience level (or 'all' includes everything)
+    const experienceMatch = experience === 'all' || item.experience === experience;
+    
+    // If no query, just check experience
+    if (!q) return experienceMatch;
+    
+    // Check both experience and query match
+    const queryMatch =
+      item.question.toLowerCase().includes(q) ||
+      item.tags.some(tag => tag.toLowerCase().includes(q)) ||
+      item.answer.toLowerCase().includes(q);
+    
+    return experienceMatch && queryMatch;
+  });
 }
 
 function App() {
   const [rawQuery, setRawQuery]     = useState('');
   const [selectedId, setSelectedId] = useState(null);
+  const [experience, setExperience] = useState('all'); // 'all', 'junior', 'mid', 'senior'
 
   // Debounce the search — 300ms after user stops typing
   const query = useDebounce(rawQuery, 300);
 
-  // Filtered results derived from debounced query
-  const results = useMemo(() => filterQuestions(QA_DATA, query), [query]);
+  // Filtered results derived from debounced query and experience level
+  const results = useMemo(() => filterQuestions(QA_DATA, query, experience), [query, experience]);
 
   // Selected question object
   const selectedQuestion = useMemo(
     () => results.find(q => q.id === selectedId) ?? null,
     [results, selectedId]
   );
+
+  // Track if we're still waiting for debounce to resolve
+  const isDebouncing = useMemo(() => rawQuery !== query, [rawQuery, query]);
 
   // When query changes, auto-select the first result
   function handleQueryChange(value) {
@@ -43,10 +61,10 @@ function App() {
 
   // Auto-select first result once debounce fires
   useMemo(() => {
-    if (results.length > 0 && selectedId === null) {
+    if (results.length > 0 && selectedId === null && !isDebouncing) {
       setSelectedId(results[0].id);
     }
-  }, [results]);
+  }, [results, isDebouncing]);
 
   const hasQuery = rawQuery.trim().length > 0;
   const noResults = hasQuery && query === rawQuery && results.length === 0;
@@ -59,8 +77,7 @@ function App() {
         {!hasQuery && (
           <div className="empty-state" aria-live="polite">
             <p className="empty-title">Frontend Interview Q&amp;A</p>
-            <p className="empty-sub">Type in the search bar below to find questions.</p>
-            <p className="empty-sub">Try: <strong>hooks</strong>, <strong>useState</strong>, <strong>webpack</strong>, <strong>accessibility</strong></p>
+            <p className="empty-sub">Select your experience level and search for topics</p>
           </div>
         )}
 
@@ -76,7 +93,8 @@ function App() {
             {/* Left — question list */}
             <aside className="left-panel">
               <p className="result-count" aria-live="polite">
-                {results.length} result{results.length !== 1 ? 's' : ''} for &ldquo;{query}&rdquo;
+                {isDebouncing && <span className="debounce-indicator">Searching…</span>}
+                {!isDebouncing && `${results.length} result${results.length !== 1 ? 's' : ''} for "${query}"`}
               </p>
               <QuestionList
                 questions={results}
@@ -94,7 +112,12 @@ function App() {
       </div>
 
       {/* ── Bottom search bar ── */}
-      <SearchBar value={rawQuery} onChange={handleQueryChange} />
+      <SearchBar 
+        value={rawQuery} 
+        onChange={handleQueryChange}
+        experience={experience}
+        onExperienceChange={setExperience}
+      />
     </div>
   );
 }
