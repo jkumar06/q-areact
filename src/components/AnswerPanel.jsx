@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import AnswerContent from './AnswerContent.jsx';
+import Tags from './Tags.jsx';
 
 /**
  * AnswerPanel
  * Right panel — shows the answer for the selected question.
  * Includes copy, print, and favorite buttons.
+ * Displays tags for the question.
  */
 function AnswerPanel({ question, onCopy, onPrint, onFavorite, isFavorite }) {
   const [showCopied, setShowCopied] = useState(false);
@@ -80,6 +82,11 @@ function AnswerPanel({ question, onCopy, onPrint, onFavorite, isFavorite }) {
           </button>
         </div>
       </div>
+      {question.tags && question.tags.length > 0 && (
+        <div className="answer-tags">
+          <Tags tags={question.tags} />
+        </div>
+      )}
       <AnswerContent text={question.answer} />
     </div>
   );

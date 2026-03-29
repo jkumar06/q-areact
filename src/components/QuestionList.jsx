@@ -1,7 +1,10 @@
+import Tags from './Tags.jsx';
+
 /**
  * QuestionList
- * Renders filtered questions in a scrollable left panel.
+ * Renders filtered questions in a scrollable left panel as cards.
  * Highlights the active (selected) question.
+ * Displays tags for each question.
  */
 function QuestionList({ questions, selectedId, onSelect }) {
   if (questions.length === 0) return null;
@@ -23,7 +26,14 @@ function QuestionList({ questions, selectedId, onSelect }) {
           }}
           tabIndex={0}
         >
-          {q.question}
+          <div className="question-item-content">
+            <p className="question-item-text">{q.question}</p>
+            {q.tags && q.tags.length > 0 && (
+              <div className="question-item-tags">
+                <Tags tags={q.tags} />
+              </div>
+            )}
+          </div>
         </li>
       ))}
     </ul>

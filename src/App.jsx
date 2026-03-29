@@ -11,23 +11,27 @@ import ToastContainer, { useToast } from './components/Toast.jsx';
  * Filters Q&A data by search query and experience level.
  * Matches against: question text, tags, and answer body.
  * Also filters by selected experience level.
+ * Optionally filters by favorites only.
  * Requires minimum 2 characters for search to trigger.
  */
-function filterQuestions(data, query, experience) {
+function filterQuestions(data, query, experience, showFavoritesOnly = false, favorites = []) {
   const q = query.toLowerCase().trim();
   
   // Require at least 2 characters to search
   if (q.length < 2) return [];
   
   // If no query and no specific experience selected, return empty
-  if (!q && experience === 'all') return [];
+  if (!q && experience === 'all' && !showFavoritesOnly) return [];
   
   return data.filter(item => {
     // Must match experience level (or 'all' includes everything)
     const experienceMatch = experience === 'all' || item.experience === experience;
     
-    // If no query, just check experience
-    if (!q) return experienceMatch;
+    // If favorites filter is enabled, check if question is in favorites
+    const favoritesMatch = !showFavoritesOnly || favorites.includes(item.id);
+    
+    // If no query, just check experience and favorites
+    if (!q) return experienceMatch && favoritesMatch;
     
     // Check both experience and query match
     const queryMatch =
@@ -35,7 +39,7 @@ function filterQuestions(data, query, experience) {
       item.tags.some(tag => tag.toLowerCase().includes(q)) ||
       item.answer.toLowerCase().includes(q);
     
-    return experienceMatch && queryMatch;
+    return experienceMatch && queryMatch && favoritesMatch;
   });
 }
 
@@ -45,6 +49,7 @@ function App() {
   const [experience, setExperience] = useState('all');
   const [isDark, setIsDark] = useState(() => localStorage.getItem('theme') === 'dark');
   const [favorites, setFavorites] = useState(() => JSON.parse(localStorage.getItem('favorites') || '[]'));
+  const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
   const searchInputRef = useRef(null);
   const { toasts, show: showToast, dismiss: dismissToast } = useToast();
 
@@ -89,7 +94,7 @@ function App() {
   const query = useDebounce(rawQuery, 300);
 
   // Filtered results derived from debounced query and experience level
-  const results = useMemo(() => filterQuestions(qaData, query, experience), [qaData, query, experience]);
+  const results = useMemo(() => filterQuestions(qaData, query, experience, showFavoritesOnly, favorites), [qaData, query, experience, showFavoritesOnly, favorites]);
 
   // Selected question object
   const selectedQuestion = useMemo(
@@ -157,6 +162,9 @@ function App() {
           seniorCount={0}
           isDark={isDark}
           onThemeToggle={() => setIsDark(!isDark)}
+          showFavoritesOnly={showFavoritesOnly}
+          onToggleFavorites={() => setShowFavoritesOnly(!showFavoritesOnly)}
+          favoritesCount={favorites.length}
         />
         <div className="content">
           <div className="empty-state" aria-live="polite">
@@ -181,6 +189,9 @@ function App() {
           seniorCount={0}
           isDark={isDark}
           onThemeToggle={() => setIsDark(!isDark)}
+          showFavoritesOnly={showFavoritesOnly}
+          onToggleFavorites={() => setShowFavoritesOnly(!showFavoritesOnly)}
+          favoritesCount={favorites.length}
         />
         <div className="content">
           <div className="empty-state" aria-live="polite">
@@ -204,6 +215,9 @@ function App() {
         seniorCount={stats.senior}
         isDark={isDark}
         onThemeToggle={() => setIsDark(!isDark)}
+        showFavoritesOnly={showFavoritesOnly}
+        onToggleFavorites={() => setShowFavoritesOnly(!showFavoritesOnly)}
+        favoritesCount={favorites.length}
       />
 
       {/* Main content */}

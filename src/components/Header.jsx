@@ -1,6 +1,6 @@
 /**
  * Header Component
- * Shows title, stats, theme toggle, and help
+ * Shows title, stats, theme toggle, favorites filter, and help
  */
 import { useState } from 'react';
 
@@ -10,7 +10,10 @@ function Header({
   midCount, 
   seniorCount, 
   isDark, 
-  onThemeToggle 
+  onThemeToggle,
+  showFavoritesOnly,
+  onToggleFavorites,
+  favoritesCount
 }) {
   const [showHelp, setShowHelp] = useState(false);
 
@@ -58,6 +61,14 @@ function Header({
             aria-label="Help and shortcuts"
           >
             ⌨️
+          </button>
+          <button
+            className={`header-btn favorites-btn ${showFavoritesOnly ? 'active' : ''}`}
+            onClick={onToggleFavorites}
+            title={showFavoritesOnly ? 'Show all questions' : 'Show favorites only'}
+            aria-label="Toggle favorites filter"
+          >
+            ❤️ {favoritesCount > 0 && <span className="favorites-count">{favoritesCount}</span>}
           </button>
           <button
             className={`header-btn theme-toggle ${isDark ? 'dark' : 'light'}`}

@@ -481,8 +481,175 @@ body {
   transition: opacity 0.2s;
 }
 
-.code-block:hover .code-copy-btn {
+.code-block-wrapper {
+  position: relative;
+}
+
+.code-block-wrapper .code-copy-btn {
+  opacity: 0;
+}
+
+.code-block-wrapper:hover .code-copy-btn {
   opacity: 1;
+}
+
+.code-copy-btn:hover {
+  background: var(--accent);
+  filter: brightness(1.1);
+}
+
+/* ── Tags ── */
+.tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 12px 0;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  background: rgba(var(--tag-color-rgb), 0.15);
+  border: 1px solid var(--tag-color);
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-primary);
+  transition: var(--transition);
+}
+
+.tag:hover {
+  background: rgba(var(--tag-color-rgb), 0.25);
+  transform: translateY(-1px);
+}
+
+.tag-icon {
+  font-size: 12px;
+}
+
+.tag-text {
+  white-space: nowrap;
+}
+
+/* Tag color overrides using CSS variables */
+.tag {
+  --tag-color: #61dafb;
+}
+
+.tag[style*="--tag-color: #61dafb"] { --tag-color: #61dafb; }
+.tag[style*="--tag-color: #ff6b6b"] { --tag-color: #ff6b6b; }
+.tag[style*="--tag-color: #4ecdc4"] { --tag-color: #4ecdc4; }
+.tag[style*="--tag-color: #95e1d3"] { --tag-color: #95e1d3; }
+.tag[style*="--tag-color: #f38181"] { --tag-color: #f38181; }
+.tag[style*="--tag-color: #aa96da"] { --tag-color: #aa96da; }
+.tag[style*="--tag-color: #fcbad3"] { --tag-color: #fcbad3; }
+.tag[style*="--tag-color: #f7df1e"] { --tag-color: #f7df1e; }
+.tag[style*="--tag-color: #ffd93d"] { --tag-color: #ffd93d; }
+.tag[style*="--tag-color: #6bcf7f"] { --tag-color: #6bcf7f; }
+.tag[style*="--tag-color: #4a90e2"] { --tag-color: #4a90e2; }
+.tag[style*="--tag-color: #ff85c0"] { --tag-color: #ff85c0; }
+.tag[style*="--tag-color: #a8dadc"] { --tag-color: #a8dadc; }
+.tag[style*="--tag-color: #f4a261"] { --tag-color: #f4a261; }
+.tag[style*="--tag-color: #e76f51"] { --tag-color: #e76f51; }
+
+/* ── Question Items as Cards ── */
+.question-item-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.question-item-text {
+  font-size: 14px;
+  color: var(--text-primary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.question-item-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.question-item-tags .tag {
+  padding: 2px 6px;
+  font-size: 10px;
+}
+
+/* Updated question-item for card styling */
+.question-item {
+  padding: 14px 16px;
+  font-size: 14px;
+  line-height: 1.5;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
+  outline: none;
+  transition: var(--transition);
+  background: var(--bg-primary);
+  border-left: 3px solid transparent;
+}
+
+.question-item:hover {
+  background: var(--bg-secondary);
+  border-left-color: var(--accent);
+  transform: translateX(2px);
+}
+
+.question-item:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+  background: var(--accent-light);
+}
+
+.question-item.active {
+  background: var(--accent-light);
+  color: var(--accent);
+  font-weight: 500;
+  border-left: 3px solid var(--accent);
+}
+
+/* ── Answer Tags Section ── */
+.answer-tags {
+  margin: 16px 0 24px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.answer-tags .tags-container {
+  margin: 0;
+}
+
+/* ── Favorites Button ── */
+.favorites-btn {
+  position: relative;
+}
+
+.favorites-btn.active {
+  background: var(--accent-light);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.favorites-count {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  background: var(--error);
+  color: white;
+  font-size: 10px;
+  font-weight: 600;
+  border-radius: 50%;
+  padding: 0 4px;
 }
 
 /* ── Search Bar ── */
@@ -778,6 +945,23 @@ body {
     min-height: 44px;
     display: flex;
     align-items: center;
+  }
+
+  .question-item-tags {
+    gap: 3px;
+  }
+
+  .question-item-tags .tag {
+    padding: 2px 5px;
+    font-size: 9px;
+  }
+
+  .tags-container {
+    gap: 4px;
+  }
+
+  .answer-tags {
+    margin: 12px 0 16px;
   }
 
   /* Search bar */
